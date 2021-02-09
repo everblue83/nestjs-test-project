@@ -2,11 +2,11 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
+  CreateDateColumn, BaseEntity,
 } from "typeorm";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,3 +16,5 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 }
+
+export default User;

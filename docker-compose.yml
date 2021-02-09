@@ -5,8 +5,9 @@ services:
     restart: unless-stopped
     build: ./postgres
     container_name: postgres
+    # postgres 로컬포트가 사용중이라 변경.
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./postgres/postgres_data:/var/lib/postgresql/data
       - ./postgres/sqls/:/docker-entrypoint-initdb.d/
@@ -42,5 +43,6 @@ services:
   nginx:
     restart: always
     build: ./nginx
+    # 80포트 사용중이라 변경.
     ports:
-      - "80:80"
+      - "8081:80"
