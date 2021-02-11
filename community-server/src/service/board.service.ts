@@ -12,9 +12,7 @@ export class BoardService {
   ) {}
 
   createBoard(boardDto: BoardDto) {
-    return this.boardRepository.save(
-      this.boardRepository.create(boardDto),
-    );
+    return this.boardRepository.save(this.boardRepository.create(boardDto));
   }
 
   updateBoard(id: number, boardDto: BoardDto) {
@@ -27,24 +25,26 @@ export class BoardService {
   }
 
   findOne(id: number) {
-      let board;
-      try {
-          board = this.boardRepository.findOne(id);
-          return board || null;
-      } catch (error) {
-          return null;
-      }
+    let board;
+    try {
+      board = this.boardRepository.findOne(id);
+      return board || null;
+    } catch (error) {
+      return null;
+    }
   }
 
   findByCategory(category: string) {
-      let board;
-      try {
-          board = this.boardRepository.createQueryBuilder("board")
-              .where("board.category = :category", {category : category}).getMany();
-          return board || null;
-      } catch (error) {
-          return null;
-      }
+    let board;
+    try {
+      board = this.boardRepository
+        .createQueryBuilder('board')
+        .where('board.category = :category', { category: category })
+        .getMany();
+      return board || null;
+    } catch (error) {
+      return null;
+    }
   }
 
   findAll() {
@@ -52,10 +52,10 @@ export class BoardService {
   }
 
   findListByCategory(category: string) {
-      return this.findByCategory(category)
+    return this.findByCategory(category);
   }
 
   deleteBoard(id: number) {
-      return this.boardRepository.delete(id);
+    return this.boardRepository.delete(id);
   }
 }

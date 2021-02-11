@@ -36,10 +36,7 @@ export class BoardController {
   @ApiBody({ type: BoardDto })
   @Put('board/modify/:id')
   updateDoctor(@Param('id') id: number, @Body() doctorDto: BoardDto) {
-    return this.boardService.updateBoard(
-        id,
-        doctorDto,
-    );
+    return this.boardService.updateBoard(id, doctorDto);
   }
 
   // 유저가 (자신의 게시물만)삭제
@@ -47,6 +44,4 @@ export class BoardController {
   deleteBoard(@Param('id') id: number) {
     return this.boardService.deleteBoard(id);
   }
-
-
 }
