@@ -1,27 +1,26 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn, BaseEntity, BeforeInsert,
-} from "typeorm";
-import * as crypto from 'crypto';
+import {BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 
-@Entity()
-export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+@Entity('user')
+export class User {
+  @PrimaryGeneratedColumn('uuid') id: string;
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    unique: true
+  })
+  username: string;
+  @Column({
+    type: 'varchar',
+    nullable: false
+  })
+  password: string;  @Column({
+    type: 'varchar',
+    nullable: false
+  })
 
-  @Column({ type: "varchar", length: 20, nullable: false })
-  name: string;
-
-  @BeforeInsert()
-  hashPassword() {
-    this.password = crypto.createHmac('sha256', this.password).digest('hex');
+  email: string;
+  @BeforeInsert()  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
   }
-  @Column({ type: "varchar", length: 200, nullable: false })
-  password: string;
-  @CreateDateColumn()
-  createdAt: Date;
 }
-
-export default User;

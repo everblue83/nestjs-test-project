@@ -5,9 +5,7 @@ import { BoardService } from '../service/board.service';
 import { domains } from '../../../domains';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([domains.Board]),
-  ],
+  imports: [TypeOrmModule.forFeature([domains.Board])],
   controllers: [BoardController],
   providers: [BoardService],
 })
