@@ -1,5 +1,4 @@
 FROM node:10.23-alpine
-
 WORKDIR /usr/src/community
 
 COPY ./package.json ./

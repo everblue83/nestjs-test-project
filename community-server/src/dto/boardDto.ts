@@ -4,7 +4,7 @@ board 게시물 dto (id 제외, reply, repliedAt 제외)
  */
 export class BoardDto {
   @ApiProperty()
-  userId: number;
+  userId: string;
 
   @ApiProperty()
   userName: string;
