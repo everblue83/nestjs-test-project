@@ -3,7 +3,8 @@ import * as bcrypt from 'bcryptjs';
 
 @Entity('user')
 export class User {
-  @PrimaryGeneratedColumn('uuid') id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
   @Column({ type: 'varchar', nullable: false, unique: true }) username: string;
   @Column({ type: 'varchar', nullable: false }) password: string;
   @Column({ type: 'varchar', nullable: false }) email: string;

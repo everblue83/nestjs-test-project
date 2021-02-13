@@ -11,8 +11,8 @@ export class Board extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: "string", nullable: false })
-    userId: string;
+    @Column({type: "int" })
+    userId: number;
 
     @Column({ type: "varchar", length: 100, nullable: false })
     title: string;
