@@ -53,7 +53,8 @@ export class BoardService {
     try {
       board = this.boardRepository
         .createQueryBuilder('board')
-        .leftJoinAndSelect('board.user', 'user');
+        .leftJoinAndSelect('board.user', 'user')
+        .select(['board', 'user.username']);
 
       board =
         boardSearchDto.title !== 'undefined'
