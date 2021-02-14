@@ -11,5 +11,5 @@ export class UserDto {
   @IsEmail()
   email: string;
 
-  createdOn?: Date;
+  createdAt?: Date;
 }

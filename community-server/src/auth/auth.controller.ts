@@ -9,13 +9,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegistrationStatusInterface } from './interface/registration-status.interface';
+import { RegistrationStatusInterface } from './interface/registrationStatus.interface';
 import { CreateUserDto } from '../dto/CreateUserDto';
 import { LoginUserDto } from '../dto/LoginUserDto';
-import { LoginStatus } from './interface/login-status.interface';
-import { ApiBody } from '@nestjs/swagger';
+import { LoginStatus } from './interface/loginStatus.interface';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtPayload } from './interface/payload.interface';
+import { JwtPayload } from './interface/jwtPayload.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -29,7 +29,7 @@ export class AuthController {
     const result: RegistrationStatusInterface = await this.authService.register(
       createUserDto,
     );
-    if (!result.success) {
+    if (!result.status) {
       throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
     }
     return result;
@@ -42,6 +42,7 @@ export class AuthController {
   }
 
   @Get('whoami')
+  @ApiBearerAuth()
   @UseGuards(AuthGuard())
   public async testAuth(@Req() req: any): Promise<JwtPayload> {
     return req.user;

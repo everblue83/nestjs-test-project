@@ -1,12 +1,12 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../dto/CreateUserDto';
-import { RegistrationStatusInterface } from './interface/registration-status.interface';
-import { JwtPayload } from './interface/payload.interface';
+import { RegistrationStatusInterface } from './interface/registrationStatus.interface';
+import { JwtPayload } from './interface/jwtPayload.interface';
 import { UserDto } from '../dto/UserDto';
 import { LoginUserDto } from '../dto/LoginUserDto';
 import { JwtService } from '@nestjs/jwt';
-import { LoginStatus } from './interface/login-status.interface';
+import { LoginStatus } from './interface/loginStatus.interface';
 
 @Injectable()
 export class AuthService {
@@ -17,14 +17,14 @@ export class AuthService {
 
   async register(userDto: CreateUserDto): Promise<RegistrationStatusInterface> {
     let status: RegistrationStatusInterface = {
-      success: true,
+      status: true,
       message: 'user registered',
     };
     try {
       await this.userService.create(userDto);
     } catch (err) {
       status = {
-        success: false,
+        status: false,
         message: err,
       };
     }

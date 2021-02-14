@@ -28,7 +28,7 @@ export class UserService {
       throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
     }
 
-    // compare passwords
+    // 패스워드 비교
     const areEqual = await bcrypt.compare(password, user.password);
 
     if (!areEqual) {
@@ -46,11 +46,11 @@ export class UserService {
   async create(userDto: CreateUserDto): Promise<UserDto> {
     const { username, password, email } = userDto;
 
-    // check if the user exists in the db
-    const userInDb = await this.userRepository.findOne({
+    // 유저 id 중복 체크
+    const userExist = await this.userRepository.findOne({
       where: { username },
     });
-    if (userInDb) {
+    if (userExist) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
 

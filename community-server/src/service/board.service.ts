@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { domains } from '../../../domains';
 import { BoardDto } from '../dto/boardDto';
+import { BoardSearchDto } from '../dto/boardSearchDto';
 
 @Injectable()
 export class BoardService {
@@ -47,8 +48,34 @@ export class BoardService {
     }
   }
 
-  findAll() {
-    return this.boardRepository.find();
+  findArticle(boardSearchDto: BoardSearchDto) {
+    let board;
+    try {
+      board = this.boardRepository
+        .createQueryBuilder('board')
+        .leftJoinAndSelect('board.user', 'user');
+
+      board =
+        boardSearchDto.title !== 'undefined'
+          ? board.where('board.title like :title', {
+              title: '%' + boardSearchDto.title + '%',
+            })
+          : board;
+      board =
+        boardSearchDto.username !== 'undefined'
+          ? board.where('user.username like :username', {
+              username: '%' + boardSearchDto.username + '%',
+            })
+          : board;
+
+      board = board.getMany();
+
+      return board || null;
+    } catch (error) {
+      return null;
+    }
+
+    //return this.boardRepository.find();
   }
 
   findListByCategory(category: string) {

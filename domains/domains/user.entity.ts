@@ -1,5 +1,6 @@
-import {BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import {Board} from "./board.entity";
 
 @Entity('user')
 export class User {
@@ -8,10 +9,17 @@ export class User {
   @Column({ type: 'varchar', nullable: false, unique: true }) username: string;
   @Column({ type: 'varchar', nullable: false }) password: string;
   @Column({ type: 'varchar', nullable: false }) email: string;
-  @CreateDateColumn() createdOn?: Date;
-  @CreateDateColumn() updatedOn?: Date;
+  @CreateDateColumn() createdAt?: Date;
+  @CreateDateColumn() updatedAt?: Date;
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
+
+  // User(1) <-> Board(*)
+  @OneToMany(
+      (type) => Board,
+      (board) => board.userId,
+  )
+  board!: Board[];
 }

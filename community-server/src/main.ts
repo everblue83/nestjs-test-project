@@ -12,6 +12,7 @@ async function bootstrap() {
     .setDescription('The Community API description')
     .setVersion('1.0')
     .addTag('Community')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('community/docs', app, document);

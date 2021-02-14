@@ -3,8 +3,9 @@ import {
     Column,
     PrimaryGeneratedColumn,
     CreateDateColumn,
-    UpdateDateColumn, BaseEntity,
+    UpdateDateColumn, BaseEntity, ManyToOne,
 } from "typeorm";
+import {User} from "./user.entity";
 
 @Entity()
 export class Board extends BaseEntity {
@@ -20,13 +21,13 @@ export class Board extends BaseEntity {
     @Column({ type: "varchar", length: 400, nullable: false })
     content: string;
 
-    @Column({type: "int", nullable: false })
+    @Column({type: "int", nullable: true })
     doctorId: number;
 
-    @Column({ type: "varchar", length: 400})
+    @Column({ type: "varchar", length: 400, nullable: true})
     reply: string;
 
-    @Column({ type: "date"})
+    @Column({ type: "date", nullable: true})
     repliedAt: Date;
 
     @CreateDateColumn()
@@ -34,4 +35,11 @@ export class Board extends BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    // User(1) <-> Board(*)
+    @ManyToOne(
+        (type) => User,
+        (user) => user.id
+    )
+    user!: User;
 }
