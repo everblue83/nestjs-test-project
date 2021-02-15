@@ -17,7 +17,7 @@ import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtPayload } from './interface/jwtPayload.interface';
 
-@Controller('auth')
+@Controller('authUser')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

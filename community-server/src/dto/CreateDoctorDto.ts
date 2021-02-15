@@ -1,13 +1,9 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserDto {
+export class CreateDoctorDto {
   @IsNotEmpty()
-  @ApiProperty({ default: 0 })
-  id: number;
-
-  @IsNotEmpty()
-  @ApiProperty({ default: 'id' })
+  @ApiProperty({ default: 'doctorid' })
   userid: string;
 
   @IsNotEmpty()
@@ -15,7 +11,16 @@ export class UserDto {
   name: string;
 
   @IsNotEmpty()
+  @ApiProperty({ default: 'password' })
+  password: string;
+
+  @IsNotEmpty()
   @IsEmail()
   @ApiProperty({ default: 'me@email.com' })
   email: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  @ApiProperty({ default: '내과' })
+  category: string;
 }

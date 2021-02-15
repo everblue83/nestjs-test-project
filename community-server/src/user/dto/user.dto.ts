@@ -5,7 +5,10 @@ export class UserDto {
   id: number;
 
   @IsNotEmpty()
-  username: string;
+  userid: string;
+
+  @IsNotEmpty()
+  name: string;
 
   @IsNotEmpty()
   @IsEmail()

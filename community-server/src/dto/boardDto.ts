@@ -6,9 +6,6 @@ export class BoardDto {
   //@ApiProperty()
   userId: number;
 
-  //@ApiProperty()
-  userName: string;
-
   @ApiProperty()
   title: string;
 

@@ -6,6 +6,7 @@ import {
     UpdateDateColumn, BaseEntity, ManyToOne,
 } from "typeorm";
 import {User} from "./user.entity";
+import {Doctor} from "./doctor.entity";
 
 @Entity()
 export class Board extends BaseEntity {
@@ -42,4 +43,11 @@ export class Board extends BaseEntity {
         (user) => user.id
     )
     user!: User;
+
+    // Doctor(1) <-> Board(*)
+    @ManyToOne(
+        (type) => Doctor,
+        (doctor) => doctor.id
+    )
+    doctor!: Doctor;
 }

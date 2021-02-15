@@ -7,7 +7,8 @@ import {
   Param,
   UseGuards,
   Delete,
-  Req, Query,
+  Req,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { BoardService } from '../service/board.service';
@@ -20,49 +21,51 @@ import { AuthGuard } from '@nestjs/passport';
 의사는 게시물을 작성할 수 없으며, 유저가 작성한 게시물에 댓글만 작성할 수 있음
 * */
 @Controller('user')
-@ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
   // 유저는 게시물을 작성할 수 있음
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: BoardDto })
-  @Post('board')
-  createPost(@Req() req, @Body() boardDto: BoardDto) {
-    const user = req.user;
-    if (user) {
-      boardDto.userId = user.id;
-      boardDto.userName = user.username;
-    } else {
-      boardDto.userId = 0;
-      boardDto.userName = 'name';
-    }
-    return this.boardService.createBoard(boardDto);
+  @Post('board/create')
+  async createPost(@Req() req, @Body() boardDto: BoardDto) {
+    return await this.boardService.createBoard(boardDto, req.user);
   }
 
   // 유저는 전체 게시물을 조회할 수 있음
   // 제목 및 작성자로 검색이 가능함
-  @Get('board')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Get('board/query')
   findArticle(@Query() params: BoardSearchDto) {
     return this.boardService.findArticle(params);
   }
 
   // 임의의 게시물을 선택하여 본문을 조회할 수 있음
-  @Get('board/:id')
+  @Get('board/query/:id')
   findOne(@Param('id') id: number) {
     return this.boardService.findOne(id);
   }
 
   // 유저가 (자신의 게시물만)수정
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @ApiBody({ type: BoardDto })
   @Put('board/modify/:id')
-  updateDoctor(@Param('id') id: number, @Body() doctorDto: BoardDto) {
-    return this.boardService.updateBoard(id, doctorDto);
+  updateArticle(
+    @Param('id') id: number,
+    @Body() boardDto: BoardDto,
+    @Req() req,
+  ) {
+    return this.boardService.updateBoard(id, boardDto, req.user);
   }
 
   // 유저가 (자신의 게시물만)삭제
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @Delete('board/remove/:id')
-  deleteBoard(@Param('id') id: number) {
-    return this.boardService.deleteBoard(id);
+  deleteBoard(@Param('id') id: number, @Req() req) {
+    return this.boardService.deleteBoard(id, req.user);
   }
 }

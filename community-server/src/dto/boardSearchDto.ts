@@ -2,7 +2,7 @@ import { ApiModelPropertyOptional } from '@nestjs/swagger/dist/decorators/api-mo
 
 export class BoardSearchDto {
   @ApiModelPropertyOptional()
-  username: string;
+  name: string;
 
   @ApiModelPropertyOptional()
   title: string;
