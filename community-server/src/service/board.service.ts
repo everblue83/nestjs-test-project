@@ -2,8 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { domains } from '../../../domains';
-import { BoardDto } from '../dto/boardDto';
-import { BoardSearchDto } from '../dto/boardSearchDto';
+import { BoardDto } from '../dto/BoardDto';
+import { BoardSearchDto } from '../dto/BoardSearchDto';
+import { ReplyDto } from '../dto/ReplyDto';
 
 @Injectable()
 export class BoardService {
@@ -11,6 +12,17 @@ export class BoardService {
     @InjectRepository(domains.Board)
     private readonly boardRepository: Repository<domains.Board>, //private readonly userRepository: Repository<domains.User>, //private readonly doctorRepository: Repository<domains.Doctor>,
   ) {}
+
+  createReply(id: number, replyDto: ReplyDto, user) {
+    if (!user) {
+      throw new HttpException(
+        '로그인 상태가 아닙니다.',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    replyDto.doctorId = user.id;
+    return this.boardRepository.update(id, replyDto);
+  }
 
   createBoard(boardDto: BoardDto, user) {
     if (!user) {

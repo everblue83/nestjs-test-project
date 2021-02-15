@@ -12,18 +12,23 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { BoardService } from '../service/board.service';
-import { BoardDto } from '../dto/boardDto';
-import { BoardSearchDto } from '../dto/boardSearchDto';
+import { BoardDto } from '../dto/BoardDto';
+import { BoardSearchDto } from '../dto/BoardSearchDto';
 import { AuthGuard } from '@nestjs/passport';
+import { ReplyDto } from '../dto/ReplyDto';
 
-/*
-유저는 자신의 게시물만 수정/삭제가 가능함
-의사는 게시물을 작성할 수 없으며, 유저가 작성한 게시물에 댓글만 작성할 수 있음
-* */
 @Controller('user')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
+  //의사는 게시물을 작성할 수 없으며, 유저가 작성한 게시물에 댓글만 작성할 수 있음
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwtdoctor'))
+  @ApiBody({ type: BoardDto })
+  @Post('board/createReply')
+  async createReply(@Req() req, @Body() replyDto: ReplyDto) {
+    return await this.boardService.createReply(replyDto, req.user);
+  }
   // 유저는 게시물을 작성할 수 있음
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
